@@ -22,7 +22,7 @@ spec:
     - name: repoURL
       value: "https://github.com/adriankabala/argocd-v2-demo.git"
     - name: targetRevision
-      value: "main"
+      value: "master"
     - name: path
       value: "manifests/nginx"
     - name: targetNamespace

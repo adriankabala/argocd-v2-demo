@@ -17,7 +17,7 @@ spec:
   project: default
   source:
     repoURL: "https://github.com/adriankabala/argocd-v2-demo.git"
-    targetRevision: main
+    targetRevision: master
     path: apps-in-apps/children
   destination:
     server: "https://kubernetes.default.svc"

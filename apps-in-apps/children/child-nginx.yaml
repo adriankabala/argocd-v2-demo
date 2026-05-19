@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: "https://github.com/adriankabala/argocd-v2-demo.git"
-    targetRevision: main
+    targetRevision: master
     path: manifests/nginx
   destination:
     name: "vcluster-my-project-my-vcluster"
