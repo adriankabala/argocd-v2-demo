@@ -1,0 +1,29 @@
+# ArgoApplication - using template reference
+# Per-project resource. References an ArgoApplicationTemplate by name
+# and fills in parameters. The reconciler renders the final ArgoCD Application.
+#
+# Target: vCluster (deploy into the tenant cluster itself)
+apiVersion: management.loft.sh/v1
+kind: ArgoCDApplication
+metadata:
+  name: my-nginx
+  namespace: loft-p-my-project
+spec:
+  displayName: "My Nginx"
+  description: "Nginx deployed into tenant cluster via template"
+  destination:
+    virtualCluster:
+      name: my-vcluster
+      namespace: loft-p-my-project
+      target: vCluster
+  templateRef:
+    name: nginx-from-git
+  parameters:
+    - name: repoURL
+      value: "https://github.com/adriankabala/argocd-v2-demo.git"
+    - name: targetRevision
+      value: "main"
+    - name: path
+      value: "manifests/nginx"
+    - name: targetNamespace
+      value: "nginx-app"

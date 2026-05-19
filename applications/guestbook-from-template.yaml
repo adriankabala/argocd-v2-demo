@@ -1,0 +1,21 @@
+# ArgoApplication - Guestbook via template
+# Demonstrates using the guestbook-helm template with custom parameters.
+apiVersion: management.loft.sh/v1
+kind: ArgoCDApplication
+metadata:
+  name: my-guestbook
+  namespace: loft-p-my-project
+spec:
+  displayName: "My Guestbook"
+  destination:
+    virtualCluster:
+      name: my-vcluster
+      namespace: loft-p-my-project
+      target: vCluster
+  templateRef:
+    name: guestbook-helm
+  parameters:
+    - name: replicaCount
+      value: "3"
+    - name: targetNamespace
+      value: "guestbook-demo"

@@ -1,0 +1,30 @@
+# ArgoApplicationTemplate - Guestbook from Helm chart
+# Demonstrates Helm-based template with overridable values.
+apiVersion: management.loft.sh/v1
+kind: ArgoCDApplicationTemplate
+metadata:
+  name: guestbook-helm
+spec:
+  displayName: "Guestbook (Helm)"
+  description: "Classic ArgoCD guestbook app from Helm chart"
+  parameters:
+    - name: replicaCount
+      description: "Number of frontend replicas"
+      defaultValue: "2"
+    - name: targetNamespace
+      description: "Namespace to deploy into"
+      defaultValue: "guestbook"
+  template:
+    spec:
+      source:
+        repoURL: "https://github.com/adriankabala/argocd-v2-demo.git"
+        targetRevision: main
+        path: manifests/guestbook
+      destination:
+        namespace: "{{ .Values.targetNamespace }}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

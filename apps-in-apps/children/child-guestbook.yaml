@@ -1,0 +1,21 @@
+# Child app - Guestbook
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: child-guestbook
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/adriankabala/argocd-v2-demo.git"
+    targetRevision: main
+    path: manifests/guestbook
+  destination:
+    name: "vcluster-my-project-my-vcluster"
+    namespace: guestbook-child
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

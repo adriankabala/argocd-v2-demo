@@ -1,0 +1,24 @@
+# Child app - Nginx
+# Created automatically by the parent app.
+# destination.name should match the cluster name registered by the Platform:
+#   "vcluster-{projectName}-{clusterName}"
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: child-nginx
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/adriankabala/argocd-v2-demo.git"
+    targetRevision: main
+    path: manifests/nginx
+  destination:
+    name: "vcluster-my-project-my-vcluster"
+    namespace: nginx-child
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

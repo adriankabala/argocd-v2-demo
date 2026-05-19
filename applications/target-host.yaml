@@ -1,0 +1,36 @@
+# ArgoApplication - target: host
+# Deploys an app onto the CONTROL PLANE CLUSTER from the context of a tenant cluster.
+# This crosses the tenant isolation boundary - use with caution.
+#
+# The reconciler uses the control plane cluster's connector (not the tenant cluster's).
+# destination.server is overwritten to the platform proxy URL.
+#
+# Security note: RBAC for target:host is UI-level only in 4.10.
+# Caleb: "not recommended" in vcluster.yaml templating context.
+apiVersion: management.loft.sh/v1
+kind: ArgoCDApplication
+metadata:
+  name: monitoring-on-host
+  namespace: loft-p-my-project
+spec:
+  displayName: "Monitoring (on host)"
+  description: "Deploy monitoring stack on control plane cluster from tenant cluster context"
+  destination:
+    virtualCluster:
+      name: my-vcluster
+      namespace: loft-p-my-project
+      target: host
+  template:
+    spec:
+      source:
+        repoURL: "https://github.com/adriankabala/argocd-v2-demo.git"
+        targetRevision: main
+        path: manifests/nginx
+      destination:
+        namespace: monitoring
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

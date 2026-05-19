@@ -1,0 +1,32 @@
+# ArgoApplication - inline spec (no template)
+# Instead of referencing a template, the full ArgoCD Application spec is inlined.
+# Useful for one-off deployments that don't need reusability.
+#
+# Target: vCluster
+apiVersion: management.loft.sh/v1
+kind: ArgoCDApplication
+metadata:
+  name: nginx-inline
+  namespace: loft-p-my-project
+spec:
+  displayName: "Nginx (inline)"
+  description: "Nginx deployed with inline spec, no template"
+  destination:
+    virtualCluster:
+      name: my-vcluster
+      namespace: loft-p-my-project
+      target: vCluster
+  template:
+    spec:
+      source:
+        repoURL: "https://github.com/adriankabala/argocd-v2-demo.git"
+        targetRevision: main
+        path: manifests/nginx
+      destination:
+        namespace: nginx-inline
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

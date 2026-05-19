@@ -1,0 +1,37 @@
+# ArgoApplicationTemplate - Nginx from git repo
+# Platform-wide, created by admin. Users reference this when creating ArgoApplications.
+# Parameters are substituted via {{ .Values.* }} at instance creation time.
+apiVersion: management.loft.sh/v1
+kind: ArgoCDApplicationTemplate
+metadata:
+  name: nginx-from-git
+spec:
+  displayName: "Nginx (Git)"
+  description: "Deploy nginx from a git repository with configurable replicas and namespace"
+  parameters:
+    - name: repoURL
+      description: "Git repository URL containing nginx manifests"
+      defaultValue: "https://github.com/adriankabala/argocd-v2-demo.git"
+    - name: targetRevision
+      description: "Git branch or tag"
+      defaultValue: "main"
+    - name: path
+      description: "Path within the repo"
+      defaultValue: "manifests/nginx"
+    - name: targetNamespace
+      description: "Namespace to deploy into"
+      defaultValue: "nginx-demo"
+  template:
+    spec:
+      source:
+        repoURL: "{{ .Values.repoURL }}"
+        targetRevision: "{{ .Values.targetRevision }}"
+        path: "{{ .Values.path }}"
+      destination:
+        namespace: "{{ .Values.targetNamespace }}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

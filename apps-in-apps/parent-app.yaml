@@ -1,0 +1,28 @@
+# Apps-in-apps pattern - Parent Application
+# This ArgoCD Application points to a directory containing child Application manifests.
+# ArgoCD auto-discovers and creates child apps.
+#
+# In v2 context: create this as an ArgoApplication (inline spec) on the Platform.
+# The children will be created in ArgoCD automatically.
+# Child apps resolve spec.destination.name to the registered cluster name.
+#
+# Naming: Platform registers clusters as "vcluster-{projectName}-{clusterName}"
+# so children should use that name in destination, or use server URL.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: parent-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/adriankabala/argocd-v2-demo.git"
+    targetRevision: main
+    path: apps-in-apps/children
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

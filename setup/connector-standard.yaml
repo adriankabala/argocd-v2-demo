@@ -1,0 +1,20 @@
+# ArgoCD Connector - Standard type
+# Platform-wide Secret that connects vCluster Platform to an ArgoCD instance.
+# Created by Platform Admin. Referenced by tenant clusters via integrations.argoCD.connector.
+#
+# In-cluster URL: use the K8s service DNS, not localhost.
+# The reconciler pod needs to reach this URL directly.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: local-argocd
+  namespace: vcluster-platform
+  labels:
+    loft.sh/connector-type: argocd
+stringData:
+  connectorType: argocd
+  server: http://argocd-server.argocd.svc.cluster.local
+  namespace: argocd
+  authType: token
+  token: "<PASTE YOUR ARGOCD API TOKEN HERE>"
+  insecure: "true"

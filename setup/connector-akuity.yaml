@@ -1,0 +1,32 @@
+# ArgoCD Connector - Akuity type
+# Akuity uses an outbound agent model - no inbound network access needed.
+# The agent is deployed in the `akuity-agent` namespace on the target cluster.
+#
+# Requires TWO sets of credentials:
+#   1. Akuity Platform API (akuityOrgId, akuityInstanceId, akuityApiKeyId, akuityApiKeySecret)
+#      - Used for: cluster registration, agent manifest fetch, deregistration
+#   2. ArgoCD auth (token or username+password)
+#      - Used for: managing ArgoCD Applications on the Akuity instance
+apiVersion: v1
+kind: Secret
+metadata:
+  name: akuity-connector
+  namespace: vcluster-platform
+  labels:
+    loft.sh/connector-type: argocd
+stringData:
+  connectorType: akuity
+  server: "https://<instanceId>.cd.akuity.cloud/"
+  namespace: argocd
+  authType: token
+  token: "<ARGOCD API TOKEN FOR AKUITY INSTANCE>"
+  insecure: "false"
+  # Akuity Platform API credentials
+  akuityOrgId: "<YOUR_ORG_ID>"
+  akuityInstanceId: "<YOUR_INSTANCE_ID>"
+  akuityApiKeyId: "<YOUR_API_KEY_ID>"
+  akuityApiKeySecret: "<YOUR_API_KEY_SECRET>"
+  # Agent sizing (optional)
+  akuityAgentSize: CLUSTER_SIZE_MEDIUM
+  # akuityRepoServerReplicas: "1"
+  # akuityRepoServerMemory: "512Mi"

@@ -1,0 +1,48 @@
+# ArgoApplicationTemplate - HA vCluster via Helm
+# Deploys a tenant cluster with HA etcd (3 replicas) and HA control plane.
+# Useful for testing ArgoCD deploying vCluster instances themselves.
+apiVersion: management.loft.sh/v1
+kind: ArgoCDApplicationTemplate
+metadata:
+  name: ha-vcluster
+spec:
+  displayName: "HA vCluster"
+  description: "Deploy a high-availability tenant cluster (3x etcd, 3x control plane)"
+  parameters:
+    - name: releaseName
+      description: "Helm release name for the tenant cluster"
+      defaultValue: "my-ha-vcluster"
+    - name: targetNamespace
+      description: "Host namespace for the tenant cluster"
+      defaultValue: "ha-vcluster"
+    - name: chartVersion
+      description: "vCluster Helm chart version"
+      defaultValue: "0.34.0"
+  template:
+    spec:
+      source:
+        repoURL: "https://charts.loft.sh"
+        chart: vcluster
+        targetRevision: "{{ .Values.chartVersion }}"
+        helm:
+          releaseName: "{{ .Values.releaseName }}"
+          values: |
+            controlPlane:
+              backingStore:
+                etcd:
+                  deploy:
+                    enabled: true
+                    statefulSet:
+                      highAvailability:
+                        replicas: 3
+              statefulSet:
+                highAvailability:
+                  replicas: 3
+      destination:
+        namespace: "{{ .Values.targetNamespace }}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

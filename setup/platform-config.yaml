@@ -1,0 +1,38 @@
+# Bootstrap vCluster Platform 4.10 via ArgoCD
+# Apply this to your ArgoCD instance to install the Platform itself via GitOps.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vcluster-platform
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: vcluster-platform
+    server: "https://kubernetes.default.svc"
+  source:
+    repoURL: "https://charts.loft.sh"
+    targetRevision: 4.10.0-next.7
+    chart: vcluster-platform
+    helm:
+      parameters:
+        - name: admin.create
+          value: "true"
+        - name: admin.username
+          value: admin
+        - name: admin.password
+          value: password
+        - name: ingress.enabled
+          value: "true"
+        - name: ingress.host
+          value: "vcluster-platform.example"
+        - name: audit.enableSideCar
+          value: "false"
+        - name: config.audit.level
+          value: "1"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,7 @@
+.DS_Store
+*.swp
+*.swo
+*~
+tf-kind/.terraform/
+tf-kind/.terraform.lock.hcl
+tf-kind/terraform.tfstate*

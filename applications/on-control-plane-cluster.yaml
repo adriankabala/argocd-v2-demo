@@ -1,0 +1,31 @@
+# ArgoApplication - deploy on control plane cluster directly
+# Uses destination.cluster instead of destination.virtualCluster.
+# Requires spec.argoCD.enabled on the Cluster CRD:
+#   kubectl patch cluster.management.loft.sh loft-cluster --type merge \
+#     -p '{"spec":{"argoCD":{"enabled":true,"connector":"local-argocd"}}}'
+apiVersion: management.loft.sh/v1
+kind: ArgoCDApplication
+metadata:
+  name: infra-on-cluster
+  namespace: loft-p-my-project
+spec:
+  displayName: "Infra on Control Plane"
+  description: "Deploy directly on control plane cluster (not via tenant cluster)"
+  destination:
+    cluster:
+      name: loft-cluster
+      namespace: infra-tools
+  template:
+    spec:
+      source:
+        repoURL: "https://github.com/adriankabala/argocd-v2-demo.git"
+        targetRevision: main
+        path: manifests/nginx
+      destination:
+        namespace: infra-tools
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
