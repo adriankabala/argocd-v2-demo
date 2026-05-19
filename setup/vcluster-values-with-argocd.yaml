@@ -2,9 +2,11 @@
 # This shows how to configure ArgoCD on a tenant cluster via Helm values
 # (alternative to UI toggle).
 #
-# Note: integrations.argoCD and deploy.argoCD sections are STRIPPED from
-# the vcluster.yaml before Helm deploy - the tenant cluster never sees
-# the ArgoCD config. The Platform reconciler handles it separately.
+# Note: integrations.argoCD is STRIPPED from the vcluster.yaml before
+# Helm deploy - the tenant cluster never sees the ArgoCD config.
+# The Platform reconciler handles it separately.
+#
+# Apps are created separately via ArgoApplication CRDs (just deploy_apps).
 
 # Standard vCluster config
 controlPlane:
@@ -17,31 +19,3 @@ integrations:
   argoCD:
     enabled: true
     connector: local-argocd
-
-# Deploy ArgoCD applications with the tenant cluster
-deploy:
-  argoCD:
-    applications:
-      - name: my-nginx
-        templateRef:
-          name: nginx-from-git
-        parameters:
-          - name: targetNamespace
-            value: "nginx-app"
-          - name: repoURL
-            value: "https://github.com/adriankabala/argocd-v2-demo.git"
-      - name: my-guestbook-inline
-        inline:
-          spec:
-            source:
-              repoURL: "https://github.com/adriankabala/argocd-v2-demo.git"
-              targetRevision: main
-              path: manifests/guestbook
-            destination:
-              namespace: guestbook-app
-            syncPolicy:
-              automated:
-                prune: true
-                selfHeal: true
-              syncOptions:
-                - CreateNamespace=true

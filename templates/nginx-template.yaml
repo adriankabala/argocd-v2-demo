@@ -9,20 +9,25 @@ spec:
   displayName: "Nginx (Git)"
   description: "Deploy nginx from a git repository with configurable replicas and namespace"
   parameters:
-    - name: repoURL
+    - variable: repoURL
+      label: "Repository URL"
       description: "Git repository URL containing nginx manifests"
       defaultValue: "https://github.com/adriankabala/argocd-v2-demo.git"
-    - name: targetRevision
+    - variable: targetRevision
+      label: "Revision"
       description: "Git branch or tag"
-      defaultValue: "main"
-    - name: path
+      defaultValue: "master"
+    - variable: path
+      label: "Path"
       description: "Path within the repo"
       defaultValue: "manifests/nginx"
-    - name: targetNamespace
+    - variable: targetNamespace
+      label: "Target Namespace"
       description: "Namespace to deploy into"
       defaultValue: "nginx-demo"
   template:
     spec:
+      project: default
       source:
         repoURL: "{{ .Values.repoURL }}"
         targetRevision: "{{ .Values.targetRevision }}"

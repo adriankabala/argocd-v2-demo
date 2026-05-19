@@ -9,17 +9,21 @@ spec:
   displayName: "HA vCluster"
   description: "Deploy a high-availability tenant cluster (3x etcd, 3x control plane)"
   parameters:
-    - name: releaseName
+    - variable: releaseName
+      label: "Release Name"
       description: "Helm release name for the tenant cluster"
       defaultValue: "my-ha-vcluster"
-    - name: targetNamespace
+    - variable: targetNamespace
+      label: "Target Namespace"
       description: "Host namespace for the tenant cluster"
       defaultValue: "ha-vcluster"
-    - name: chartVersion
+    - variable: chartVersion
+      label: "Chart Version"
       description: "vCluster Helm chart version"
       defaultValue: "0.34.0"
   template:
     spec:
+      project: default
       source:
         repoURL: "https://charts.loft.sh"
         chart: vcluster

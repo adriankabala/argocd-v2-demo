@@ -8,17 +8,20 @@ spec:
   displayName: "Guestbook (Helm)"
   description: "Classic ArgoCD guestbook app from Helm chart"
   parameters:
-    - name: replicaCount
+    - variable: replicaCount
+      label: "Replica Count"
       description: "Number of frontend replicas"
       defaultValue: "2"
-    - name: targetNamespace
+    - variable: targetNamespace
+      label: "Target Namespace"
       description: "Namespace to deploy into"
       defaultValue: "guestbook"
   template:
     spec:
+      project: default
       source:
         repoURL: "https://github.com/adriankabala/argocd-v2-demo.git"
-        targetRevision: main
+        targetRevision: master
         path: manifests/guestbook
       destination:
         namespace: "{{ .Values.targetNamespace }}"
