@@ -1,0 +1,32 @@
+apiVersion: management.loft.sh/v1
+kind: ArgoCDApplication
+metadata:
+  name: sd-app-of-apps
+  namespace: p-default
+  annotations:
+    loft.sh/argocd-connector: local-argocd
+spec:
+  displayName: "SD App of Apps"
+  owner:
+    user: admin
+  destination:
+    virtualCluster:
+      name: sd-test
+      namespace: p-default
+      target: vCluster
+  template:
+    metadata: {}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/adriankabala/argocd-v2-demo.git
+        targetRevision: master
+        path: manifests/app-of-apps
+      destination:
+        namespace: argocd
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

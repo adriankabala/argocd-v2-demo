@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: curl-loop
+  labels:
+    app: curl-loop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: curl-loop
+  template:
+    metadata:
+      labels:
+        app: curl-loop
+    spec:
+      containers:
+      - name: curl-loop
+        image: curlimages/curl:8.7.1
+          command: ["sh"]
+          args: ["-c", "'while", "true;", "do", "sleep", "30;", "done'"]
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            memory: 32Mi

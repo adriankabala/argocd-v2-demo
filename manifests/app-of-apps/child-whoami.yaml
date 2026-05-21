@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: child-nginx
+  name: child-whoami
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/adriankabala/argocd-v2-demo.git
     targetRevision: master
-    path: manifests/apps/nginx
+    path: manifests/apps/whoami
   destination:
     name: loft-default-virtualcluster-sd-test-argocd
-    namespace: child-nginx
+    namespace: child-whoami
   syncPolicy:
     automated:
       prune: true
