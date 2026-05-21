@@ -17,8 +17,8 @@ spec:
       containers:
       - name: curl-loop
         image: curlimages/curl:8.7.1
-          command: ["sh"]
-          args: ["-c", "'while", "true;", "do", "sleep", "30;", "done'"]
+        command: ["sh"]
+        args: ["-c", "while true; do sleep 30; done"]
         resources:
           requests:
             cpu: 10m

@@ -17,7 +17,7 @@ spec:
       containers:
       - name: echo-server
         image: hashicorp/http-echo:0.2.3
-          args: ["-text=hello"]
+        args: ["-text=hello"]
         resources:
           requests:
             cpu: 10m

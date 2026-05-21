@@ -17,8 +17,8 @@ spec:
       containers:
       - name: alpine
         image: alpine:3.20
-          command: ["sleep"]
-          args: ["infinity"]
+        command: ["sleep"]
+        args: ["infinity"]
         resources:
           requests:
             cpu: 10m
