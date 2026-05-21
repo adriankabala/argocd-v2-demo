@@ -23,6 +23,7 @@ spec:
         targetRevision: master
         path: manifests/app-of-apps
       destination:
+        server: https://kubernetes.default.svc
         namespace: argocd
       syncPolicy:
         automated:
