@@ -8,7 +8,7 @@ browse        := if os() == "linux" { "xdg-open "} else { "open" }
 copy          := if os() == "linux" { "xsel -ib"} else { "pbcopy" }
 
 argocd_port   := "30950"
-platform_ver  := "4.10.0-next.7"
+platform_ver  := "4.10.0-alpha.1"
 kind_ctx      := "kind-demo-local"
 
 # shorthand - all kubectl/helm against the host cluster, never the vcluster context
