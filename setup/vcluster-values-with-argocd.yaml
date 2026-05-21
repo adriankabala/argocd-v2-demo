@@ -9,10 +9,18 @@
 # Apps are created separately via ArgoApplication CRDs (just deploy_apps).
 
 # Standard vCluster config
+sync:
+  toHost:
+    ingresses:
+      enabled: true
 controlPlane:
-  statefulSet:
-    highAvailability:
-      replicas: 1
+  coredns:
+    enabled: true
+    embedded: true
+  backingStore:
+    etcd:
+      embedded:
+        enabled: true
 
 # ArgoCD v2 integration (processed by Platform, stripped before deploy)
 integrations:

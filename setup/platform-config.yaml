@@ -12,7 +12,7 @@ spec:
     server: "https://kubernetes.default.svc"
   source:
     repoURL: "https://charts.loft.sh"
-    targetRevision: 4.10.0-next.7
+    targetRevision: 4.10.0-alpha.1
     chart: vcluster-platform
     helm:
       parameters:
